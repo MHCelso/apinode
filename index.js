@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // PETICIONES A RECIBIR
+require('./server/mongoRequests')(app);
 require('./server/mysqlRequests')(app);
 require('./server/request')(app);
 
