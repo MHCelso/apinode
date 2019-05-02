@@ -1,7 +1,7 @@
 const controller = require('../controller/MongoResourcesController');
 
-function readFileView(request, response){
-	controller.readFileResources()
+function readFileView(nombre, request, response){
+	controller.readFileResources(nombre)
 	.then((resultado)=>{
 		response.status(200).send(resultado);
 	})

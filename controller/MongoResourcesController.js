@@ -16,27 +16,51 @@ function connectDB(){
 }
 
 // funcion que lee el archivo de recursos
-function readFileResources(){
-	let dirFile = './resources/nombres.txt';
+function readFileResources(nombre){
+
+	let dirFile = './resources/'+nombre+'.txt';
 	
 	return new Promise((resolve, reject)=>{
+		
 		fs.readFile(dirFile, 'utf8', (error, resources) => {  
     	
     		if (error){
     			reject({'mensaje': 'ocurrio un error', 'error': error});
     		} else {
-    			let users = resources.split("\r\n");
-    			
 
-    				for (const i = 0; i<users.len; i++) {
-    					console.log(users[i]);
-    				}
-    			
+    			let users = resources.split("\r\n");
+    			let all = [];
+    				
+    			for (let i = 0; i<users.length; i++) {
+    				all.push({nombre: users[i]});
+    			}
+
     			//let obj = Object.assign({}, users);
-    			resolve(users);
+
+    			connectDB()
+    			.then((client)=>{
+    				let db = client.db('morpheus');
+    				console.log(all);
+    				db.collection('nombres').insert(all, (error, resultado) => {
+    					
+    					if (error) {
+    						reject(error);
+    					} else {
+    						resolve({mensaje: 'se insertaron los registros', resultado: resultado});
+    					}
+
+    				});
+    			})
+    			.catch((error)=>{
+    				reject(error);
+    			});
+
+
+    			resolve({mensaje: 'se insertaron los registros'});
     		}
 
-		});	
+		});
+
 	});	
 }
 
