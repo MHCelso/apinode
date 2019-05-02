@@ -40,8 +40,8 @@ function readFileResources(nombre){
     			connectDB()
     			.then((client)=>{
     				let db = client.db('morpheus');
-    				console.log(all);
-    				db.collection('nombres').insert(all, (error, resultado) => {
+    				
+    				db.collection('nombres').insertMany(all, (error, resultado) => {
     					
     					if (error) {
     						reject(error);
